@@ -6,10 +6,10 @@ const uri =
   `mongodb://localhost/please-set-process-env-mongodb-uri`
 
 mongoose
-  .connect(uri, { useNewUrlParser: true })
-  .then(x => {
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then((x) => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
-  .catch(err => {
+  .catch((err) => {
     console.error('Error connecting to mongo', err)
   })
