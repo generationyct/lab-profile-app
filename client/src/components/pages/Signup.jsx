@@ -4,7 +4,6 @@ import api from '../../api'
 export default function Signup(props) {
   const [state, setState] = useState({
     username: '',
-    name: '',
     password: '',
     message: null,
   })
@@ -20,16 +19,15 @@ export default function Signup(props) {
     e.preventDefault()
     let data = {
       username: state.username,
-      name: state.name,
       password: state.password,
     }
     api
       .signup(data)
-      .then(result => {
+      .then((result) => {
         console.log('SUCCESS!')
         props.history.push('/') // Redirect to the home page
       })
-      .catch(err => setState({ message: err.toString() }))
+      .catch((err) => setState({ message: err.toString() }))
   }
   return (
     <div className="Signup">
@@ -43,14 +41,6 @@ export default function Signup(props) {
           onChange={handleInputChange}
         />{' '}
         <br />
-        Name:{' '}
-        <input
-          type="text"
-          value={state.name}
-          name="name"
-          onChange={handleInputChange}
-        />{' '}
-        <br />
         Password:{' '}
         <input
           type="password"
@@ -59,7 +49,7 @@ export default function Signup(props) {
           onChange={handleInputChange}
         />{' '}
         <br />
-        <button onClick={e => handleClick(e)}>Signup</button>
+        <button onClick={(e) => handleClick(e)}>Signup</button>
       </form>
       {state.message && <div className="info info-danger">{state.message}</div>}
     </div>

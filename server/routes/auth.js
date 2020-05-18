@@ -8,23 +8,23 @@ const bcrypt = require('bcrypt')
 const bcryptSalt = 10
 
 router.post('/signup', (req, res, next) => {
-  const { username, password, name } = req.body
+  const { username, password } = req.body
   if (!username || !password) {
     res.status(400).json({ message: 'Indicate username and password' })
     return
   }
   User.findOne({ username })
-    .then(userDoc => {
+    .then((userDoc) => {
       if (userDoc !== null) {
         res.status(409).json({ message: 'The username already exists' })
         return
       }
       const salt = bcrypt.genSaltSync(bcryptSalt)
       const hashPass = bcrypt.hashSync(password, salt)
-      const newUser = new User({ username, password: hashPass, name })
+      const newUser = new User({ username, password: hashPass })
       return newUser.save()
     })
-    .then(userSaved => {
+    .then((userSaved) => {
       // LOG IN THIS USER
       // "req.logIn()" is a Passport method that calls "serializeUser()"
       // (that saves the USER ID in the session)
@@ -34,7 +34,7 @@ router.post('/signup', (req, res, next) => {
         res.json(userSaved)
       })
     })
-    .catch(err => next(err))
+    .catch((err) => next(err))
 })
 
 router.post('/login', (req, res, next) => {
@@ -42,7 +42,7 @@ router.post('/login', (req, res, next) => {
 
   // first check to see if there's a document with that username
   User.findOne({ username })
-    .then(userDoc => {
+    .then((userDoc) => {
       // "userDoc" will be empty if the username is wrong (no document in database)
       if (!userDoc) {
         // create an error object to send to our error handler with "next()"
@@ -67,7 +67,7 @@ router.post('/login', (req, res, next) => {
         res.json(userDoc)
       })
     })
-    .catch(err => next(err))
+    .catch((err) => next(err))
 })
 
 router.post('/login-with-passport-local-strategy', (req, res, next) => {
@@ -82,7 +82,7 @@ router.post('/login-with-passport-local-strategy', (req, res, next) => {
       return
     }
 
-    req.login(theUser, err => {
+    req.login(theUser, (err) => {
       if (err) {
         res.status(500).json({ message: 'Something went wrong' })
         return
